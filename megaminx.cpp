@@ -59,7 +59,7 @@ Rotations for each possible face. Brief explanation:
 There are 12 faces. When a face is rotated, 5 different stickers change locations. For each face, I hardcoded the five stickers that change when it turns.
 These are stored in two parallel 2D arrays. CycleFace contains the faces of the stickers, and CycleNode contains the location on that face of the stickers.
 
-The exact position of each node on the cube is described in the README.
+The exact position of each node on the cube is described in design.pdf
 */
 int cycleFace[12][5] = {{5,4,3,2,1},{0,2,6,10,5},{0,3,7,6,1},{0,4,8,7,2},{0,5,9,8,3},{0,1,10,9,4},{11,10,1,2,7},{11,6,2,3,8},{11,7,3,4,9},{11,8,4,5,10},{11,9,5,1,6},{6,7,8,9,10}};	
 int cycleNode[12][5] = {{4,4,4,4,4},{0,6,0,8,2},{2,6,0,8,2},{4,6,0,8,1},{6,6,0,8,2},{8,6,0,8,2},{8,6,0,8,2},{6,6,0,8,2},{4,6,0,8,2},{2,6,0,8,2},{0,6,0,8,2},{4,4,4,4,4}};
@@ -215,7 +215,7 @@ cubeStruct rotateClock(cubeStruct cube, int cycle){
 	return cube;
 }
 
-//Helper function matching color character to face #, as shown in README
+//Helper function matching color character to face #, as shown in design.pdf
 int charToFaceInt(char c){
 	int j;
 	if(c=='w')
@@ -245,7 +245,7 @@ int charToFaceInt(char c){
 	return j;		
 }
 
-//Inputs are the numbers of the faces, as described in the README
+//Inputs are the numbers of the faces, as described in the design.pdf
 //Output is distance between the two faces, according to the heuristic. Returns either 1, 2, or 7. Not the most accurate it could be, but gets the job done
 int dist(int x, int y){
 	int smaller, larger;
