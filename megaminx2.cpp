@@ -14,7 +14,9 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <ctime>	//used for crand()
 #include <cmath>	//ceil()
 
-#define MAX_TURNS 200000
+#define MAX_ITERATIONS 2000000
+#define QUEUE_ITEMS 75000
+#define MAX_PQ_SIZE 100000
 
 using namespace std;
 
@@ -320,10 +322,15 @@ vector<cubeStruct> findChildren(cubeStruct cube){
 //Runs A* algorithm and prints out the # of nodes expanded
 void AStar(cubeStruct cube){
 	int d = distance(cube);
-	priority_queue<config> pq;
+	priority_queue<config> pq, temp_pq;
+	//config temp[QUEUE_ITEMS];
+	queue<config> temp_q;
 	int heuristic;		
 	int solveCounter=0;
+	int solveCounter2=0;
+	int clearCounter=0;
 	vector<int> parents;
+	//config newConfig;
 
 	config testConfig = {.c = cube, .g=0, .h=d, .p=parents}; 
 	pq.push(testConfig);
@@ -334,6 +341,7 @@ void AStar(cubeStruct cube){
 		//printCube(pq.top().c);		
 
 		solveCounter = solveCounter+1;
+		solveCounter2 = solveCounter2+1;
 		testConfig = pq.top();
 		pq.pop();
 
@@ -345,15 +353,44 @@ void AStar(cubeStruct cube){
 		//Pushes all children onto the priority queue
 		for(int i=0; i<24; i++){
 			heuristic = ceil(distance(children[i])/15);
+			//heuristic = distance(children[i]);
 			config newConfig = {.c = children[i], .h = heuristic, .g=(testConfig.g+1), .p=testConfig.p};
 			newConfig.p.push_back(i);
 			pq.push(newConfig); 
 		}
 
 		//Prevent overflow
-		if(solveCounter>MAX_TURNS){
+		if(solveCounter2>MAX_ITERATIONS){
 			cout<<"Maximum number of iterations reached sorry; change global var MAX_TURNS to bump up"<<endl;
 			break;
+		}
+
+		//Prevent overflow via new priority queue
+		
+		if(solveCounter>MAX_PQ_SIZE){
+			cout<<"meowwwwww"<<clearCounter<<endl;
+			clearCounter=clearCounter+1;
+			//cout<<"H: "<<pq.top().h<<endl;
+			//cout<<"G: "<<pq.top().g<<endl<<endl;
+			for(int i=0; i<QUEUE_ITEMS; i++){
+				temp_q.push(pq.top());
+				//temp[i]=pq.top();
+				//temp_pq.push(pq.top());
+				pq.pop();
+			}
+
+			//cout<<"Removed H: "<<pq.top().h<<endl;
+			//cout<<"Removed G: "<<pq.top().g<<endl;
+
+			while(!pq.empty())
+				pq.pop();
+
+			for(int i=0; i<QUEUE_ITEMS; i++){
+			//while(!temp_pq.empty()){
+				pq.push(temp_q.front());
+				temp_q.pop();
+			}
+			solveCounter=0;
 		}
 
 		//Print solution
@@ -372,7 +409,7 @@ void AStar(cubeStruct cube){
 		}
 	}
 
-	cout<<"The number of nodes expanded to solve the puzzle was: "<<solveCounter<<endl;
+	cout<<"The number of nodes expanded to solve the puzzle was: "<<solveCounter2<<endl;
 	return;
 }
 
@@ -384,7 +421,7 @@ int main(){
 	cin>>n;
 
 	//Randomization Here
-	while(n>=0){
+	while(n>=0 && !cin.fail()){
 		cubeStruct c = getCube();
 		int r;
 		cout<<endl<<"Here is the randomization sequence:"<<endl;
@@ -408,7 +445,7 @@ int main(){
 		cout<<endl;		 
 		//for(int i=0; i<n; i++)
 		//	printCube(path[i]);
-		cout<<"Please enter the number of random moves you want to make or enter a negative number to quit: ";
+		cout<<"Please enter the number of turns you'd like to randomize the Megaminx: ";
 		cin>>n;
 	}
 	return 0;
