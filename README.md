@@ -14,23 +14,23 @@ Dodecahedron puzzle with 12 pentagonal faces, each with a different color. Each 
 
 **About the design:**
 
-![Megaminx](https://i.ibb.co/hX72ZNC/megaminx2.jpg) <br/>
+![Megaminx](https://i.ibb.co/BwtbZfC/megaminx5.png)<br/>
+Figure 0: The actual Megaminx. The White Face, arbitrarily labeled Face 3, along with its 10 movable nodes, labeled 0-9.
+
+<br/>
+
+![Megaminx2](https://i.ibb.co/hX72ZNC/megaminx2.jpg) <br/>
 Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces. 
 
 <br/>
 
-![Megaminx2](https://i.ibb.co/NFyBSfz/megaminx3.jpg)<br/>
+![Megaminx3](https://i.ibb.co/NFyBSfz/megaminx3.jpg)<br/>
 Figure 2: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node. 
 
 <br/>
 
-![Megaminx3](https://i.ibb.co/rydjL5L/megaminx4.jpg)<br/>
+![Megaminx4](https://i.ibb.co/rydjL5L/megaminx4.jpg)<br/>
 Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned. 
-
-<br/>
-
-![Megaminx4](https://i.ibb.co/BwtbZfC/megaminx5.png)<br/>
-Figure 4: Face 3 of the actual Megaminx.
 
 <br/>
 
