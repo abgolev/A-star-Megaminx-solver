@@ -4,6 +4,6 @@ Create and randomize a Megaminx puzzle, and then use the A* search algorithm to 
 
 To run:
 
-g++ megaminx.cpp
+g++ -O3 megaminx2.cpp
 
 ./a.out
