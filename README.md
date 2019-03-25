@@ -8,4 +8,4 @@ g++ -O3 megaminx2.cpp
 
 ./a.out
 
-![Megaminx](https://ibb.co/k3Hq9TM)
+![Megaminx](https://i.ibb.co/hX72ZNC/megaminx2.jpg)
