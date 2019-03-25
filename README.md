@@ -26,6 +26,10 @@ Figure 3: A representation of the nodes of adjacent faces that move when Face 3 
 
 <br/>
 
+![Megaminx4](https://i.ibb.co/BwtbZfC/megaminx5.png)<br/>
+
+Figure 4: Face 3 of the actual Megaminx. 
+
 **About the Megaminx:**
 
 Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Tried limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills up, but that causes solutions to disappear because heuristic is so naive.
