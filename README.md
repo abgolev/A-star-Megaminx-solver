@@ -12,15 +12,21 @@ g++ -O3 megaminx2.cpp
 
 ![Megaminx](https://i.ibb.co/hX72ZNC/megaminx2.jpg)
 
-Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces. <br/>
+Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces. 
+
+<br/>
 
 ![Megaminx2](https://i.ibb.co/NFyBSfz/megaminx3.jpg)
 
-Figure 2: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node. <br/>
+Figure 2: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node. 
+
+<br/>
 
 ![Megaminx3](https://i.ibb.co/rydjL5L/megaminx4.jpg)
 
-Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned. <br/>
+Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned. 
+
+<br/>
 
 **About the Megaminx:**
 
