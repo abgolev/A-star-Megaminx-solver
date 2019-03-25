@@ -21,13 +21,11 @@ Figure 2: Each blue digit represents a node. Each face has 10 nodes, not countin
 <br/>
 
 ![Megaminx3](https://i.ibb.co/rydjL5L/megaminx4.jpg)<br/>
-
 Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned. 
 
 <br/>
 
 ![Megaminx4](https://i.ibb.co/BwtbZfC/megaminx5.png)<br/>
-
 Figure 4: Face 3 of the actual Megaminx.
 
 <br/>
