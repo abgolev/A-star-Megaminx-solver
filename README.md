@@ -7,3 +7,5 @@ To run:
 g++ -O3 megaminx2.cpp
 
 ./a.out
+
+![Megaminx](https://ibb.co/k3Hq9TM)
