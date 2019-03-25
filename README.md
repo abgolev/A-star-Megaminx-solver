@@ -14,7 +14,7 @@ g++ -O3 megaminx2.cpp
 
 Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces.
 
-<br/><br/><br/>
+<br/><br/>
 
 ![Megaminx2](https://i.ibb.co/NFyBSfz/megaminx3.jpg)
 
