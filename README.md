@@ -32,8 +32,8 @@ Runs into issues whenever randomized more than 14 turns because priority queue b
 
 Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
 
-**Version 1.1:**
+**Version 2.0:**
 
-*Rotates and solves both clockwise and counterclockwise.
-*Prints the original randomized rotations as well as the rotations needed to solve from the randomized state.
-*Working on better heuristic using a distance matrix.
+* Rotates and solves both clockwise and counterclockwise.
+* Prints the original randomized rotations as well as the rotations needed to solve from the randomized state.
+* Working on better heuristic using a distance matrix.
