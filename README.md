@@ -16,19 +16,20 @@ g++ -O3 megaminx2.cpp
 
 Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces.
 
-<br/><br/>
+<br/>
 
 ![Megaminx2](https://i.ibb.co/NFyBSfz/megaminx3.jpg)
 
 Figure 2: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node.
 
-<br/><br/>
+<br/>
 
 ![Megaminx3](https://i.ibb.co/rydjL5L/megaminx4.jpg)
 
 Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned.
 
 **About the Megaminx:**
+
 Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Tried limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills up, but that causes solutions to disappear because heuristic is so naive.
 
 Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
