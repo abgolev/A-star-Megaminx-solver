@@ -28,7 +28,9 @@ Figure 3: A representation of the nodes of adjacent faces that move when Face 3 
 
 ![Megaminx4](https://i.ibb.co/BwtbZfC/megaminx5.png)<br/>
 
-Figure 4: Face 3 of the actual Megaminx. 
+Figure 4: Face 3 of the actual Megaminx.
+
+<br/>
 
 **About the Megaminx:**
 
