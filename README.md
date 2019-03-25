@@ -15,13 +15,12 @@ Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connectin
 
 <br/>
 
-![Megaminx2](https://i.ibb.co/NFyBSfz/megaminx3.jpg)
-
+![Megaminx2](https://i.ibb.co/NFyBSfz/megaminx3.jpg)<br/>
 Figure 2: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node. 
 
 <br/>
 
-![Megaminx3](https://i.ibb.co/rydjL5L/megaminx4.jpg)
+![Megaminx3](https://i.ibb.co/rydjL5L/megaminx4.jpg)<br/>
 
 Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned. 
 
