@@ -32,7 +32,11 @@ Figure 4: Face 3 of the actual Megaminx.
 
 **About the Megaminx:**
 
-Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Tried limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills up, but that causes solutions to disappear because heuristic is so naive.
+Dodecahedron puzzle with 12 pentagonal faces, each with a different color. Each face can be turned clockwise or counterclockwise, allowing 24 different possible moves on each turn. 
+
+**About the Megaminx Solver:**
+
+Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills doesn't currently work because heuristic isn't fine tuned enough, and the correct path may slip out.
 
 Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
 
