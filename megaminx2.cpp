@@ -14,9 +14,9 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <ctime>	//used for crand()
 #include <cmath>	//ceil()
 
-#define MAX_ITERATIONS 2000000
-#define QUEUE_ITEMS 75000
-#define MAX_PQ_SIZE 100000
+#define MAX_ITERATIONS 500000
+#define QUEUE_ITEMS 125000
+#define MAX_PQ_SIZE 150000
 
 using namespace std;
 
@@ -320,8 +320,9 @@ vector<cubeStruct> findChildren(cubeStruct cube){
 	return cubeList;
 }
 
-//Runs A* algorithm and prints out the # of nodes expanded
-void AStar(cubeStruct cube){
+//Runs A* algorithm and prints out the # of nodes expanded and the solution found if any
+//Returns 1 if solution found, 0 otherwise
+int AStar(cubeStruct cube){
 	int d = distance(cube);
 	priority_queue<config> pq, temp_pq;
 	//config temp[QUEUE_ITEMS];
@@ -341,8 +342,6 @@ void AStar(cubeStruct cube){
 		//solutionTrail[pq.top().g] = pq.top().c;	//add to trail of solutions to be printed upon completion
 		//printCube(pq.top().c);		
 
-		solveCounter = solveCounter+1;
-		solveCounter2 = solveCounter2+1;
 		testConfig = pq.top();
 		pq.pop();
 
@@ -362,14 +361,14 @@ void AStar(cubeStruct cube){
 
 		//Prevent overflow
 		if(solveCounter2>MAX_ITERATIONS){
-			cout<<"Maximum number of iterations reached sorry; change global var MAX_TURNS to bump up"<<endl;
-			break;
+			cout<<"Maximum number of iterations reached sorry. No solution found."<<endl;
+			return 0;
 		}
 
 		//Prevent overflow via new priority queue
 		
 		if(solveCounter>MAX_PQ_SIZE){
-			cout<<"meowwwwww"<<clearCounter<<endl;
+			cout<<"Clearing up space in priority queue. Number of iterations so far: "<<solveCounter2<<endl;
 			clearCounter=clearCounter+1;
 			//cout<<"H: "<<pq.top().h<<endl;
 			//cout<<"G: "<<pq.top().g<<endl<<endl;
@@ -380,8 +379,8 @@ void AStar(cubeStruct cube){
 				pq.pop();
 			}
 
-			//cout<<"Removed H: "<<pq.top().h<<endl;
-			//cout<<"Removed G: "<<pq.top().g<<endl;
+			cout<<"Removed H value: "<<pq.top().h<<endl;
+			cout<<"Removed G value: "<<pq.top().g<<endl<<endl;
 
 			while(!pq.empty())
 				pq.pop();
@@ -391,8 +390,12 @@ void AStar(cubeStruct cube){
 				pq.push(temp_q.front());
 				temp_q.pop();
 			}
-			solveCounter=0;
+			solveCounter=QUEUE_ITEMS;
+			solveCounter2=solveCounter2-1;
 		}
+
+		solveCounter = solveCounter+1;
+		solveCounter2 = solveCounter2+1;
 
 		//Print solution
 		if(pq.top().h==0){
@@ -411,7 +414,7 @@ void AStar(cubeStruct cube){
 	}
 
 	cout<<"The number of nodes expanded to solve the puzzle was: "<<solveCounter2<<endl;
-	return;
+	return 1;
 }
 
 int main(){
@@ -438,10 +441,10 @@ int main(){
 			}		
 			//cout<<"Manhattan distance after turn "<<i+1<<": "<<distance(c)<<endl;
 		}
-		cout<<"Original Manhattan distance: "<<distance(c)<<endl;
+		cout<<"Original Manhattan distance: "<<distance(c)<<endl<<endl;
 		cout<<"Here is the randomized cube: "<<endl;
 		printCube(c);
-		cout<<endl;
+		cout<<endl<<"Searching for solution..."<<endl;
 		AStar(c);
 		cout<<endl;		 
 		//for(int i=0; i<n; i++)
