@@ -37,7 +37,7 @@ Figure 4: A representation of the nodes of adjacent faces that move when Face 3 
 <br/>
 
 ![Megaminx5](https://i.ibb.co/sP6tDtk/megaminx7.png)<br/>
-Figure 5: Sample stdout output of a solved cube with face numbers. In the actual output, the middle node is the respective color of the unsolved face. 
+Figure 5: Sample stdout output of a solved cube with face numbers. In the actual output, the middle node is the respective color of the unsolved face. Each character represents a color (r = red) and the characters are stored in a 12x10 char array with the rows representing the face and the columns representing the node number.
 
 <br/>
 
