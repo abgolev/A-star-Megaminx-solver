@@ -43,14 +43,14 @@ Figure 5: Sample stdout output of a solved cube with face numbers. In the actual
 
 **About the Megaminx Solver:**
 
-Works well on randomizations of 14 turns or fewer.
+Input: the number of turns that you want to randomize a solved Megaminx.
 
-Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills doesn't currently work because heuristic isn't fine tuned enough, and the correct path may be deleted. 
+Output: the randomized Megaminx and the random rotations that were done mix the Megaminx, followed by the rotations to solve, if found.
 
-Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
+Notes: Works well on randomizations of 14 turns or fewer. But Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills doesn't currently work because heuristic isn't fine tuned enough, and the correct path may be deleted. Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
 
 **Version 2.0:**
 
 * Rotates and solves both clockwise and counterclockwise.
 * Prints the original randomized rotations as well as the rotations needed to solve from the randomized state.
-* Working on better heuristic using a distance matrix.
+* Limited to 100,000 items in the priority queue; this could be changed by editing global vars.
