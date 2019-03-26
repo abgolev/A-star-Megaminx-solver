@@ -37,13 +37,15 @@ Figure 4: A representation of the nodes of adjacent faces that move when Face 3 
 <br/>
 
 ![Megaminx5](https://i.ibb.co/sP6tDtk/megaminx7.png)<br/>
-Figure 5: Sample stdout output of a solved cube with face numbers. In the actual output, the middle node is the respective color of the unsolved face. Each character represents a color (r = red) and the characters are stored in a 12x10 char array with the rows representing the face and the columns representing the node number.
+Figure 5: Sample stdout output of a solved cube with face numbers. In the actual output, the middle node is the respective color of the solved face. Each character represents a color (r = red) and the characters are stored in a 12x10 char array with the rows representing the face number and the columns representing the node number.
 
 <br/>
 
 **About the Megaminx Solver:**
 
-Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills doesn't currently work because heuristic isn't fine tuned enough, and the correct path may slip out.
+Works well on randomizations of 14 turns or fewer.
+
+Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills doesn't currently work because heuristic isn't fine tuned enough, and the correct path may be deleted. 
 
 Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
 
