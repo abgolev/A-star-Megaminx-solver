@@ -402,9 +402,9 @@ void AStar(cubeStruct cube){
 			for(int i=0; i<thisCube.p.size(); i++){
 				rotationNum = thisCube.p[i];
 				if(rotationNum<12)
-					cout<<"Clockwise rotation #";
+					cout<<"Clockwise: Face #";
 				else
-					cout<<"Counterclockwise rotation #";
+					cout<<"Counterclockwise: Face #";
 				cout<<rotationNum%12<<endl;		
 			}
 		}
@@ -430,11 +430,11 @@ int main(){
 			r = rand()%12;
 			if(rand()%2){
 				c = rotateCounterClock(c,r);
-				cout<<"Counterclockwise Rotation #"<<r<<endl;
+				cout<<"Counterclockwise: Face #"<<r<<endl;
 			}
 			else{
 				c = rotateClock(c,r);	
-				cout<<"Clockwise Rotation #"<<r<<endl;
+				cout<<"Clockwise: Face #"<<r<<endl;
 			}		
 			//cout<<"Manhattan distance after turn "<<i+1<<": "<<distance(c)<<endl;
 		}
