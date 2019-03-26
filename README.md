@@ -12,7 +12,7 @@ g++ -O3 megaminx2.cpp <br/>
 
 **About the Megaminx:**
 
-Dodecahedron puzzle with 12 pentagonal faces, each with a different color. Each face can be turned clockwise or counterclockwise, allowing 24 different possible moves on each turn. 
+Dodecahedron puzzle with 12 pentagonal faces, each with a different color. Each face can be turned clockwise or counterclockwise, allowing 24 different possible turns. 
 
 **About the design:**
 
