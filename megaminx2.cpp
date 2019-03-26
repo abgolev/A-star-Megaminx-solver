@@ -22,6 +22,7 @@ using namespace std;
 
 //Megaminx stored here
 struct cubeStruct{char arr[12][11];};
+//int adjacencyMatrix[109][109]={8};
 
 //Used for A*
 struct config{
@@ -97,10 +98,10 @@ string printBlanks(int numBlanks){
 //Prints a Megaminx
 void printCube(cubeStruct cube){
 	//Top Face
-	cout<<printBlanks(23)<<cube.arr[0][0]<<"\n";
-	cout<<printBlanks(20)<<cube.arr[0][2]<<" "<<cube.arr[0][1]<<" "<<cube.arr[0][9]<<" "<<cube.arr[0][8]<<"   \n";
-	cout<<printBlanks(21)<<cube.arr[0][3]<<" "<<cube.arr[0][10]<<" "<<cube.arr[0][7]<<" "<<"\n";
-	cout<<printBlanks(21)<<cube.arr[0][4]<<" "<<cube.arr[0][5]<<" "<<cube.arr[0][6]<<" "<<"\n";
+	cout<<printBlanks(18)<<cube.arr[0][0]<<"\n";
+	cout<<printBlanks(15)<<cube.arr[0][2]<<" "<<cube.arr[0][1]<<" "<<cube.arr[0][9]<<" "<<cube.arr[0][8]<<"   \n";
+	cout<<printBlanks(16)<<cube.arr[0][3]<<" "<<cube.arr[0][10]<<" "<<cube.arr[0][7]<<" "<<"\n";
+	cout<<printBlanks(16)<<cube.arr[0][4]<<" "<<cube.arr[0][5]<<" "<<cube.arr[0][6]<<" "<<"\n";
 	cout<<"\n";	
 
 	//Upper 5 Faces
@@ -128,10 +129,10 @@ void printCube(cubeStruct cube){
 	cout<<"\n\n";
 
 	//Bottom Face
-	cout<<printBlanks(26)<<cube.arr[11][6]<<" "<<cube.arr[11][5]<<" "<<cube.arr[11][4]<<" "<<"\n";
-	cout<<printBlanks(26)<<cube.arr[11][7]<<" "<<cube.arr[11][10]<<" "<<cube.arr[11][3]<<" "<<"\n";
-	cout<<printBlanks(25)<<cube.arr[11][8]<<" "<<cube.arr[11][9]<<" "<<cube.arr[11][1]<<" "<<cube.arr[11][2]<<"   \n";
-	cout<<printBlanks(28)<<cube.arr[11][0]<<"\n";
+	cout<<printBlanks(21)<<cube.arr[11][6]<<" "<<cube.arr[11][5]<<" "<<cube.arr[11][4]<<" "<<"\n";
+	cout<<printBlanks(21)<<cube.arr[11][7]<<" "<<cube.arr[11][10]<<" "<<cube.arr[11][3]<<" "<<"\n";
+	cout<<printBlanks(20)<<cube.arr[11][8]<<" "<<cube.arr[11][9]<<" "<<cube.arr[11][1]<<" "<<cube.arr[11][2]<<"   \n";
+	cout<<printBlanks(23)<<cube.arr[11][0]<<"\n";
 	cout<<"\n";	
 }
 
