@@ -22,7 +22,7 @@ using namespace std;
 
 //Megaminx stored here
 struct cubeStruct{char arr[12][11];};
-int adjacencyMatrix[119][119]={8};
+int adjacencyMatrix[120][120];
 
 
 //New solved cube
@@ -56,7 +56,7 @@ The exact position of each node on the cube is described in design.pdf
 */
 
 int cycleFace[12][5] = {{5,4,3,2,1},{0,2,6,10,5},{0,3,7,6,1},{0,4,8,7,2},{0,5,9,8,3},{0,1,10,9,4},{11,10,1,2,7},{11,6,2,3,8},{11,7,3,4,9},{11,8,4,5,10},{11,9,5,1,6},{6,7,8,9,10}};	
-int cycleNode[12][5] = {{4,4,4,4,4},{0,6,0,8,2},{2,6,0,8,2},{4,6,0,8,1},{6,6,0,8,2},{8,6,0,8,2},{8,6,0,8,2},{6,6,0,8,2},{4,6,0,8,2},{2,6,0,8,2},{0,6,0,8,2},{4,4,4,4,4}};
+int cycleNode[12][5] = {{4,4,4,4,4},{0,6,0,8,2},{2,6,0,8,2},{4,6,0,8,2},{6,6,0,8,2},{8,6,0,8,2},{8,6,0,8,2},{6,6,0,8,2},{4,6,0,8,2},{2,6,0,8,2},{0,6,0,8,2},{4,4,4,4,4}};
 
 //Hardcoded solved cube
 char solvedCube[12][11] = {
@@ -156,10 +156,17 @@ int charToFaceInt(char c){
 int main(){
 	int n;
 //	cin>>n;
-	for(int i=0; i<=119; i++)
-		adjacencyMatrix[i][i]=0;
 
-	
+	for(int i=0; i<120; i++){
+		for(int j=0; j<120; j++){
+			if(i==j)
+				adjacencyMatrix[i][j]=0;
+			else
+				adjacencyMatrix[i][j]=11;
+		}
+	}	
+
+	//adjacencies on same face
 	for(int i=0; i<=11; i++){
 		for(int j=0; j<=7; j++)
 			adjacencyMatrix[i*10+j][i*10+j+2]=1;
@@ -171,42 +178,85 @@ int main(){
 		adjacencyMatrix[i*10+1][i*10+9]=1;
 	}
 
+	
+	//Finding adjacent nodes using the hardcoded cycles
 	int thisFace, thisNode, nextFace, nextNode;
+	int thisNodePlusPlus, thisNodePlus, nextNodePlusPlus, nextNodePlus;
 	for(int i=0; i<=11; i++){
-		for(int j=0; j<=3; j++){
+
+		int next_j, prev_j, this_j;
+
+		for(int j=0; j<5; j++){
+			next_j=j+1;
+			prev_j=j-1;
+			if(next_j==5)
+				next_j=0;
+			if(prev_j==-1)
+				prev_j=4;
+
+
 			thisFace=cycleFace[i][j];
 			thisNode=cycleNode[i][j];
-			nextFace=cycleFace[i][j+1];
-			nextNode=cycleNode[i][j+1];
-			adjacencyMatrix[thisFace*10+thisNode][nextFace*10+nextNode]=1;
-		}
-		for(int j=1; j<=4; j++){
-			thisFace=cycleFace[i][j];
-			thisNode=cycleNode[i][j];
-			nextFace=cycleFace[i][j-1];
-			nextNode=cycleNode[i][j-1];
-			adjacencyMatrix[thisFace*10+thisNode][nextFace*10+nextNode]=1;
-		}
 
-		thisFace=cycleFace[i][4];
-		thisNode=cycleNode[i][4];
-		nextFace=cycleFace[i][0];
-		nextNode=cycleNode[i][0];
-		adjacencyMatrix[thisFace*10+thisNode][nextFace*10+nextNode]=1;
+			for(int k=0; k<2; k++){
+				if(k)
+					this_j=next_j;
+				else
+					this_j=prev_j;
 
-		thisFace=cycleFace[i][0];
-		thisNode=cycleNode[i][0];
-		nextFace=cycleFace[i][4];
-		nextNode=cycleNode[i][4];
-		adjacencyMatrix[thisFace*10+thisNode][nextFace*10+nextNode]=1;
+				nextFace=cycleFace[i][this_j];
+				nextNode=cycleNode[i][this_j];
+				adjacencyMatrix[thisFace*10+thisNode+n][nextFace*10+nextNode]=1;
+
+				thisNodePlus = thisNode+1;
+				nextNodePlus = nextNode+1;
+				adjacencyMatrix[thisFace*10+thisNodePlus][nextFace*10+nextNodePlus]=1;
+
+				thisNodePlusPlus = thisNode+2;
+				nextNodePlusPlus = nextNode+2;
+				if(thisNodePlusPlus==10)
+					thisNodePlusPlus=0;
+				if(nextNodePlusPlus==10)
+					nextNodePlusPlus=0;
+				adjacencyMatrix[thisFace*10+thisNodePlusPlus][nextFace*10+nextNodePlusPlus]=1;
+			}
+		}
 	}	
-	//and now Floyd Walsall
+	
 
-	for(int i=0; i<=119; i++){
-		for(int j=0; j<=119; j++){
-			cout<<" "<<adjacencyMatrix[i][j];
+	/*
+	//and now Floyd Walsall
+	for(int k=0; k<120; k++){
+		for(int i=0; i<120; i++){
+			for(int j=0; j<120; j++){
+				if(adjacencyMatrix[i][j] > adjacencyMatrix[i][k]+adjacencyMatrix[k][j])
+					adjacencyMatrix[i][j] = adjacencyMatrix[i][k]+adjacencyMatrix[k][j];				
+			}
+		}
+	}
+	*/
+
+	//Printing the distance matrix
+	cout<<"	";
+	for(int i=0; i<120; i++)
+		cout<<i<<"	";
+	cout<<endl;
+
+	for(int i=0; i<120; i++){
+		cout<<i<<"	";
+		for(int j=0; j<120; j++){
+			cout<<adjacencyMatrix[i][j]<<"	";
 		}
 		cout<<endl;
+	}
+
+	for(int i=0; i<120; i++){
+		int count=0;
+		for(int j=0; j<120; j++){
+			if(adjacencyMatrix[i][j]==1)
+				count=count+1;
+		}
+		cout<<"Adjacencies for ["<<i/10<<"]["<<i%10<<"]: "<<count<<endl;
 	}
 
 	return 0;
