@@ -2,9 +2,11 @@
 Create and randomize a Megaminx puzzle, and then use the A* search algorithm to solve it.
 
 
-**To run:**
+**To compile:**
 
-g++ -O3 megaminx2.cpp
+g++ -O3 megaminx2.cpp <br/>
+
+**To run:**
 
 ./a.out <br/>
 
@@ -15,22 +17,27 @@ Dodecahedron puzzle with 12 pentagonal faces, each with a different color. Each 
 **About the design:**
 
 ![Megaminx](https://i.ibb.co/BwtbZfC/megaminx5.png)<br/>
-Figure 0: The actual Megaminx. The White Face, arbitrarily labeled Face 3, along with its 10 movable nodes, labeled 0-9.
+Figure 1: The actual Megaminx. The White Face, arbitrarily labeled Face 3, along with its 10 movable nodes, labeled 0-9.
 
 <br/>
 
 ![Megaminx2](https://i.ibb.co/hX72ZNC/megaminx2.jpg) <br/>
-Figure 1: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces. 
+Figure 2: The Megaminx flattened out. Each pentagon represents a face. Connecting lines represent adjacent faces. 
 
 <br/>
 
 ![Megaminx3](https://i.ibb.co/NFyBSfz/megaminx3.jpg)<br/>
-Figure 2: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node. 
+Figure 3: Each blue digit represents a node. Each face has 10 nodes, not counting the stationary central node. 
 
 <br/>
 
 ![Megaminx4](https://i.ibb.co/rydjL5L/megaminx4.jpg)<br/>
-Figure 3: A representation of the nodes of adjacent faces that move when Face 3 is turned. 
+Figure 4: A representation of the nodes of adjacent faces that move when Face 3 is turned. 
+
+<br/>
+
+![Megaminx5](https://i.ibb.co/sP6tDtk/megaminx7.png)<br/>
+Figure 5: Sample stdout output of a solved cube with face numbers. In the actual output, the middle node is the respective color of the unsolved face. 
 
 <br/>
 
