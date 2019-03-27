@@ -13,10 +13,11 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <vector>
 #include <ctime>	//used for crand()
 #include <cmath>	//ceil()
+#include <set>
 
 #define MAX_ITERATIONS 5000000
-#define QUEUE_ITEMS 240000
-#define MAX_PQ_SIZE 250000
+#define QUEUE_ITEMS 349000
+#define MAX_PQ_SIZE 350000
 
 using namespace std;
 
@@ -29,19 +30,13 @@ struct config{
 	cubeStruct c;	//Cube configuration
 	unsigned short g;		//Distance from original cube
 	unsigned short h;		//Heuristic value
-	vector<short> p;	//Turn history to find parents
+	multiset<short> p;	//Turn history to find parents
 
 	//Needed to be able to use priority queue
 	bool operator<(const config& rhs) const
 		{
 			return (g+h) > (rhs.g + rhs.h);
 
-			/*
-			if(g!=rhs.g)
-				return (g+h) > (rhs.g + rhs.h);
-			else
-				return g > rhs.g;
-			*/
 		}
 };
 
@@ -455,8 +450,8 @@ int AStar(cubeStruct cube){
 	unsigned short heuristic;		
 	int solveCounter=0;
 	int solveCounter2=0;
-	int clearCounter=4;
-	vector<short> parents;
+	int clearCounter=49;
+	multiset<short> parents;
 
 	config testConfig = {.c = cube, .g=0, .h=d, .p=parents}; 
 	pq.push(testConfig);
@@ -479,7 +474,8 @@ int AStar(cubeStruct cube){
 			//heuristic = ceil(distance(children[i])/15);
 			heuristic = distance(children[i]);
 			config newConfig = {.c = children[i], .h = heuristic, .g=(testConfig.g+15), .p=testConfig.p};
-			newConfig.p.push_back(i);
+			//newConfig.p.push_back(i);
+			newConfig.p.insert(i);
 			pq.push(newConfig); 
 		}
 
@@ -492,11 +488,12 @@ int AStar(cubeStruct cube){
 		//Prevent overflow via new priority queue
 		
 		if(solveCounter>MAX_PQ_SIZE){
-			cout<<"Clearing up space in priority queue. Number of iterations so far: "<<solveCounter2-1<<endl;
 			clearCounter=clearCounter+1;
+			if(clearCounter==50)
+				cout<<"Clearing up space in priority queue. Number of iterations so far: "<<solveCounter2-1<<endl;
 			
 
-			if(clearCounter==5){
+			if(clearCounter==50){
 				cout<<"Top H value: "<<pq.top().h<<endl;
 				cout<<"Top G value: "<<pq.top().g<<endl<<endl;
 			}
@@ -508,7 +505,7 @@ int AStar(cubeStruct cube){
 				pq.pop();
 			}
 			
-			if(clearCounter==5){
+			if(clearCounter==50){
 				cout<<"Removed H value: "<<pq.top().h<<endl;
 				cout<<"Removed G value: "<<pq.top().g<<endl<<endl;
 				clearCounter=0;
@@ -522,8 +519,8 @@ int AStar(cubeStruct cube){
 				pq.push(temp_q.front());
 				temp_q.pop();
 			}
-			solveCounter=QUEUE_ITEMS;
-			solveCounter2=solveCounter2-1;
+			solveCounter=QUEUE_ITEMS-1;
+			solveCounter2=solveCounter2-2;
 		}
 
 		solveCounter = solveCounter+1;
@@ -534,8 +531,14 @@ int AStar(cubeStruct cube){
 			cout<<"Solution found! Here is the solution sequence:"<<endl;
 			config thisCube = pq.top();
 			int rotationNum;
-			for(int i=0; i<thisCube.p.size(); i++){
-				rotationNum = thisCube.p[i];
+			multiset<short> m = pq.top().p;
+			for(std::multiset<short>::const_iterator i(m.begin()), end(m.end());
+				i!=end;
+				++i){
+				
+			//for(int i=0; i<thisCube.p.size(); i++){
+				//rotationNum = thisCube.p[i];
+				rotationNum = *i;
 				if(rotationNum<12)
 					cout<<"Clockwise: Face #";
 				else
