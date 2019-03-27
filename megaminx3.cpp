@@ -16,8 +16,9 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <set>
 
 #define MAX_ITERATIONS 5000000
-#define QUEUE_ITEMS 349000
+#define ADJUSTED_PQ_SIZE 345000
 #define MAX_PQ_SIZE 350000
+#define PRINT_EVERY_N_TIMES 50
 
 using namespace std;
 
@@ -27,10 +28,10 @@ short adjacencyMatrix[120][120];
 
 //Used for A*
 struct config{
-	cubeStruct c;	//Cube configuration
+	cubeStruct c;			//Cube configuration
 	unsigned short g;		//Distance from original cube
 	unsigned short h;		//Heuristic value
-	multiset<short> p;	//Turn history to find parents
+	vector<short> p;		//Turn history to find parents
 
 	//Needed to be able to use priority queue
 	bool operator<(const config& rhs) const
@@ -384,8 +385,10 @@ unsigned short dist(int x, int y){
 		return 2;	
 }
 
+//more accurate heuristic based on adjacency matrix
+//exact face is unknown but picks the minimum distance to an edge or middle face of the same color
 short d, min_d;
-unsigned short distFromMatrix(int thisNode, int faceNum){
+short distFromMatrix(int thisNode, int faceNum){
 	min_d=8;
 	int isOdd = thisNode%2; 
 	for(int i=0; i<10; i=i+2){
@@ -403,8 +406,8 @@ unsigned short distFromMatrix(int thisNode, int faceNum){
 }
 
 //Outputs Manhattan distance between two faces
-unsigned short distance(cubeStruct cube){
-	unsigned short d=0;
+short distance(cubeStruct cube){
+	short d=0;
 	for(int i=0; i<12; i++)
 		for(int j=0; j<10; j++)
 			if(solvedCube[i][0]!=cube.arr[i][j])
@@ -443,24 +446,21 @@ vector<cubeStruct> findChildren(cubeStruct cube){
 //Runs A* algorithm and prints out the # of nodes expanded and the solution found if any
 //Returns 1 if solution found, 0 otherwise
 int AStar(cubeStruct cube){
-	unsigned short d = distance(cube);
-	priority_queue<config> pq, temp_pq;
-	//config temp[QUEUE_ITEMS];
+	priority_queue<config> pq;
 	queue<config> temp_q;
-	unsigned short heuristic;		
-	int solveCounter=0;
-	int solveCounter2=0;
-	int clearCounter=49;
-	multiset<short> parents;
+	short heuristic;
+		
+	int pqSizeCounter=0;
+	int iterationCounter=0;
+	int clearCounter=PRINT_EVERY_N_TIMES-1;
 
+	short d = distance(cube);
+	vector<short> parents;
 	config testConfig = {.c = cube, .g=0, .h=d, .p=parents}; 
 	pq.push(testConfig);
 
 	//While the cube has not been solved
 	while(pq.top().h!=0){	
-		//solutionTrail[pq.top().g] = pq.top().c;	//add to trail of solutions to be printed upon completion
-		//printCube(pq.top().c);		
-
 		testConfig = pq.top();
 		pq.pop();
 
@@ -474,38 +474,36 @@ int AStar(cubeStruct cube){
 			//heuristic = ceil(distance(children[i])/15);
 			heuristic = distance(children[i]);
 			config newConfig = {.c = children[i], .h = heuristic, .g=(testConfig.g+15), .p=testConfig.p};
-			//newConfig.p.push_back(i);
-			newConfig.p.insert(i);
-			pq.push(newConfig); 
+			newConfig.p.push_back(i);
+			pq.push(newConfig);
 		}
 
 		//Prevent overflow
-		if(solveCounter2>MAX_ITERATIONS){
+		if(iterationCounter>MAX_ITERATIONS){
 			cout<<"Maximum number of iterations reached sorry. No solution found."<<endl;
 			return 0;
 		}
 
-		//Prevent overflow via new priority queue
-		
-		if(solveCounter>MAX_PQ_SIZE){
+		//Prevent overflow via clearing up of priority queue from MAX_PQ_SIZE to QUEUE_ITEMS		
+		if(pqSizeCounter>MAX_PQ_SIZE){
 			clearCounter=clearCounter+1;
-			if(clearCounter==50)
-				cout<<"Clearing up space in priority queue. Number of iterations so far: "<<solveCounter2-1<<endl;
+			if(clearCounter==PRINT_EVERY_N_TIMES)
+				cout<<"Clearing up space in priority queue. Number of iterations so far: "<<iterationCounter-1<<endl;
 			
 
-			if(clearCounter==50){
+			if(clearCounter==PRINT_EVERY_N_TIMES){
 				cout<<"Top H value: "<<pq.top().h<<endl;
 				cout<<"Top G value: "<<pq.top().g<<endl<<endl;
 			}
 
-			for(int i=0; i<QUEUE_ITEMS; i++){
+			for(int i=0; i<ADJUSTED_PQ_SIZE; i++){
 				temp_q.push(pq.top());
 				//temp[i]=pq.top();
 				//temp_pq.push(pq.top());
 				pq.pop();
 			}
 			
-			if(clearCounter==50){
+			if(clearCounter==PRINT_EVERY_N_TIMES){
 				cout<<"Removed H value: "<<pq.top().h<<endl;
 				cout<<"Removed G value: "<<pq.top().g<<endl<<endl;
 				clearCounter=0;
@@ -514,31 +512,26 @@ int AStar(cubeStruct cube){
 			while(!pq.empty())
 				pq.pop();
 
-			for(int i=0; i<QUEUE_ITEMS; i++){
+			for(int i=0; i<ADJUSTED_PQ_SIZE; i++){
 			//while(!temp_pq.empty()){
 				pq.push(temp_q.front());
 				temp_q.pop();
 			}
-			solveCounter=QUEUE_ITEMS-1;
-			solveCounter2=solveCounter2-2;
+
+			pqSizeCounter=ADJUSTED_PQ_SIZE-1;
+			iterationCounter=iterationCounter-2;
 		}
 
-		solveCounter = solveCounter+1;
-		solveCounter2 = solveCounter2+1;
+		pqSizeCounter = pqSizeCounter+1;
+		iterationCounter = iterationCounter+1;
 
 		//Print solution
 		if(pq.top().h==0){
 			cout<<"Solution found! Here is the solution sequence:"<<endl;
 			config thisCube = pq.top();
 			int rotationNum;
-			multiset<short> m = pq.top().p;
-			for(std::multiset<short>::const_iterator i(m.begin()), end(m.end());
-				i!=end;
-				++i){
-				
-			//for(int i=0; i<thisCube.p.size(); i++){
-				//rotationNum = thisCube.p[i];
-				rotationNum = *i;
+			for(int i=0; i<thisCube.p.size(); i++){
+				rotationNum = thisCube.p[i];
 				if(rotationNum<12)
 					cout<<"Clockwise: Face #";
 				else
@@ -548,7 +541,7 @@ int AStar(cubeStruct cube){
 		}
 	}
 
-	cout<<"The number of nodes expanded to solve the puzzle was: "<<solveCounter2<<endl;
+	cout<<"The number of nodes expanded to solve the puzzle was: "<<iterationCounter<<endl;
 	return 1;
 }
 
