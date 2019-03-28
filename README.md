@@ -1,10 +1,9 @@
 # A-star-Megaminx-solver
 Create and randomize a Megaminx puzzle, and then use the A* search algorithm to solve it.
 
-
 **To compile:**
 
-g++ -O3 megaminx2.cpp <br/>
+g++ -O3 megaminx3.cpp <br/>
 
 **To run:**
 
@@ -47,10 +46,17 @@ Input: the number of turns that you want to randomize a solved Megaminx.
 
 Output: the randomized Megaminx and the random rotations that were done mix the Megaminx, followed by the rotations to solve, if found.
 
-Notes: Works well on randomizations of 14 turns or fewer. But Runs into issues whenever randomized more than 14 turns because priority queue blows up. 24 new configurations are added to the priority queue any time a previous configuration is expanded. Limiting priority queue to 100000 items and deleting the 20000 back ones any time it fills doesn't currently work because heuristic isn't fine tuned enough, and the correct path may be deleted. Currently working on a better heuristic that works using an adjacency matrix representing faces which are originally adjacent and then using Floyd-Walsall Algorithm to create a distance matrix for the nearest distance between nodes.
+Notes: Works well on randomizations of 14 turns or fewer. But runs into issues whenever randomized more than 14 turns because priority queue blows up if solution is not found within the first 350,000 iterations. However, still finds solutions for some instances n>14, but not all. Sometimes it does so quickly, sometimes slowly, sometimes not at all. 
 
 **Version 2.0:**
 
 * Rotates and solves both clockwise and counterclockwise.
 * Prints the original randomized rotations as well as the rotations needed to solve from the randomized state.
 * Limited to 100,000 items in the priority queue; this could be changed by editing global vars.
+
+**Version 3.0:**
+* More accurate heuristic: Floyd-Walsall algorithm used to create a distance matrix between nodes.
+* Priority queue limited to 350,000 items, with the 5,000 back items deleted each time the limit is hit.
+* After hitting the 350,000 iteration limit, prints the top item removed every 50,000 iterations, for sanity checks.
+* Currently set to a max of 5 million iterations; this can be bumped up by editing global vars.
+
