@@ -11,9 +11,8 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <stdlib.h>	//rand
 #include <queue>	//priority queue 
 #include <vector>
-#include <ctime>	//used for crand()
-#include <cmath>	//ceil()
-#include <set>
+#include <ctime>	//crand()
+//#include <cmath>	//ceil()
 
 #define MAX_ITERATIONS 5000000
 #define ADJUSTED_PQ_SIZE 345000
@@ -24,9 +23,11 @@ using namespace std;
 
 //Megaminx stored here
 struct cubeStruct{char arr[12][11];};
+
+//Distance matrix between nodes
 short adjacencyMatrix[120][120];
 
-//Used for A*
+//Used for A*; overload operator needed for ability to use these in a priority queue
 struct config{
 	cubeStruct c;			//Cube configuration
 	unsigned short g;		//Distance from original cube
@@ -37,7 +38,6 @@ struct config{
 	bool operator<(const config& rhs) const
 		{
 			return (g+h) > (rhs.g + rhs.h);
-
 		}
 };
 
@@ -62,11 +62,11 @@ cubeStruct getCube(){
 }
 
 /*
-Rotations each possible face. 
+cycleFace and cycleNode are a pair parallel arrays symbolizing the possible rotations for each face.
+Movements happen in triplets and the minimum node of each triplet is included in the cycleNode list.
 
 There are 12 faces. When a face is rotated, 5 different stickers change locations. 
-For each face, hardcoded the five stickers that change when it turns. These are stored in two parallel 2D arrays. 
-CycleFace contains the faces of the stickers, and CycleNode contains the location on that face of the stickers.
+cycleFace contains the faces of the stickers, and cycleNode contains the node number.
 
 The exact position of each node on the cube is described in design.pdf
 */
@@ -98,6 +98,7 @@ string printBlanks(int numBlanks){
 	return s;
 }
 
+//used to compute the Adjacency Matrix based on the given connections between nodes
 void makeAdjacencyMatrix(){
 	for(int i=0; i<120; i++){
 		for(int j=0; j<120; j++){
@@ -122,11 +123,12 @@ void makeAdjacencyMatrix(){
 	
 	//Finding adjacent nodes using the hardcoded cycles
 	int thisFace, thisNode, nextFace, nextNode;
-	int thisNodePlusPlus, thisNodePlus, nextNodePlusPlus, nextNodePlus;
-	for(int i=0; i<=11; i++){
 
+	//for each face
+	for(int i=0; i<=11; i++){
 		int next_j, prev_j, this_j;
 
+		//for each moving node in the cycle
 		for(int j=0; j<5; j++){
 			next_j=j+1;
 			prev_j=j-1;
@@ -139,6 +141,7 @@ void makeAdjacencyMatrix(){
 			thisFace=cycleFace[i][j];
 			thisNode=cycleNode[i][j];
 
+			//for the node going forward in the cycle and the one going back in the cycle
 			for(int k=0; k<2; k++){
 				if(k)
 					this_j=next_j;
@@ -147,19 +150,17 @@ void makeAdjacencyMatrix(){
 
 				nextFace=cycleFace[i][this_j];
 				nextNode=cycleNode[i][this_j];
-				adjacencyMatrix[thisFace*10+thisNode][nextFace*10+nextNode]=1;
-
-				thisNodePlus = thisNode+1;
-				nextNodePlus = nextNode+1;
-				adjacencyMatrix[thisFace*10+thisNodePlus][nextFace*10+nextNodePlus]=1;
-
-				thisNodePlusPlus = thisNode+2;
-				nextNodePlusPlus = nextNode+2;
-				if(thisNodePlusPlus==10)
-					thisNodePlusPlus=0;
-				if(nextNodePlusPlus==10)
-					nextNodePlusPlus=0;
-				adjacencyMatrix[thisFace*10+thisNodePlusPlus][nextFace*10+nextNodePlusPlus]=1;
+		
+				//for each of the two other nodes on the moving triplet
+				for(int n=1; n<=2; n++){
+					adjacencyMatrix[thisFace*10+thisNode][nextFace*10+nextNode]=1;
+					thisNode = thisNode+1;
+					nextNode = nextNode+1;
+					if(n==2 && thisNode==10)
+						thisNode=0;
+					if(n==2 && nextNode==10)
+						nextNode=0;					
+				}
 			}
 		}
 	}	
