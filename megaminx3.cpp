@@ -14,10 +14,10 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <ctime>	//crand()
 //#include <cmath>	//ceil()
 
-#define MAX_ITERATIONS 5000000
-#define ADJUSTED_PQ_SIZE 345000
-#define MAX_PQ_SIZE 350000
-#define PRINT_EVERY_N_TIMES 50
+#define MAX_ITERATIONS 20000000
+#define ADJUSTED_PQ_SIZE 2500000
+#define MAX_PQ_SIZE 5000000
+#define PRINT_EVERY_N_TIMES 1
 
 using namespace std;
 
@@ -331,32 +331,32 @@ cubeStruct rotateClock(cubeStruct cube, int cycle){
 
 //Helper function matching color character to face #, as shown in design.pdf
 short charToFaceInt(char c){
-	int j;
 	if(c=='w')
-		j=0;
+		return 0;
 	else if(c=='p')
-		j=1;
+		return 1;
 	else if(c=='r')
-		j=2;
+		return 2;
 	else if(c=='b')
-		j=3;
+		return 3;
  	else if(c=='y')
-		j=4;
+		return 4;
 	else if(c=='g')
-		j=5;
+		return 5;
 	else if(c=='l')
-		j=6;
+		return 6;
 	else if(c=='B')
-		j=7;
+		return 7;
 	else if(c=='P')
-		j=8;
+		return 8;
 	else if(c=='L')
-		j=9;
+		return 9;
 	else if(c=='o')
-		j=10;
+		return 10;
 	else if(c=='G')
-		j=11;
-	return j;		
+		return 11;
+	else
+		return -1;
 }
 
 //Inputs are the numbers of the faces, as described in the design.pdf
@@ -450,6 +450,8 @@ int AStar(cubeStruct cube){
 	priority_queue<config> pq;
 	queue<config> temp_q;
 	short heuristic;
+	short prev_turn = -1;
+	//short prev_turn;
 		
 	int pqSizeCounter=0;
 	int iterationCounter=0;
@@ -469,15 +471,23 @@ int AStar(cubeStruct cube){
 			break;
 
 		vector<cubeStruct> children = findChildren(testConfig.c);	//Find children of the cube
+
+		if(!testConfig.p.empty())
+			prev_turn = testConfig.p.back();
 		
 		//Pushes all children onto the priority queue
 		for(short i=0; i<24; i++){
 			//heuristic = ceil(distance(children[i])/15);
-			heuristic = distance(children[i]);
-			config newConfig = {.c = children[i], .h = heuristic, .g=(testConfig.g+15), .p=testConfig.p};
-			newConfig.p.push_back(i);
-			pq.push(newConfig);
+			if(abs(i-prev_turn)!=12){
+				heuristic = distance(children[i]);
+				config newConfig = {.c = children[i], .h = heuristic, .g=(testConfig.g+15), .p=testConfig.p};
+				newConfig.p.push_back(i);
+				pq.push(newConfig);
+				pqSizeCounter = pqSizeCounter+1;
+				iterationCounter = iterationCounter+1;
+			}
 		}
+
 
 		//Prevent overflow
 		if(iterationCounter>MAX_ITERATIONS){
@@ -486,10 +496,10 @@ int AStar(cubeStruct cube){
 		}
 
 		//Prevent overflow via clearing up of priority queue from MAX_PQ_SIZE to QUEUE_ITEMS		
-		if(pqSizeCounter>MAX_PQ_SIZE){
+		if(pqSizeCounter>=MAX_PQ_SIZE){
 			clearCounter=clearCounter+1;
 			if(clearCounter==PRINT_EVERY_N_TIMES)
-				cout<<"Clearing up space in priority queue. Number of iterations so far: "<<iterationCounter-1<<endl;
+				cout<<"Clearing up space in priority queue. Number of iterations so far: "<<iterationCounter<<endl;
 			
 
 			if(clearCounter==PRINT_EVERY_N_TIMES){
@@ -513,18 +523,19 @@ int AStar(cubeStruct cube){
 			while(!pq.empty())
 				pq.pop();
 
-			for(int i=0; i<ADJUSTED_PQ_SIZE; i++){
-			//while(!temp_pq.empty()){
+//			cout<<"Meowwwww"<<endl;
+
+
+//			for(int i=0; i<ADJUSTED_PQ_SIZE; i++){
+			while(!temp_q.empty()){
 				pq.push(temp_q.front());
 				temp_q.pop();
 			}
 
-			pqSizeCounter=ADJUSTED_PQ_SIZE-1;
-			iterationCounter=iterationCounter-2;
+			pqSizeCounter=ADJUSTED_PQ_SIZE;
+			//iterationCounter=iterationCounter-2;
 		}
 
-		pqSizeCounter = pqSizeCounter+1;
-		iterationCounter = iterationCounter+1;
 
 		//Print solution
 		if(pq.top().h==0){
