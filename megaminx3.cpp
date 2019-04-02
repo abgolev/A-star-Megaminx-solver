@@ -14,7 +14,7 @@ Purpose: Creates, randomizes, and solves an instance of the Megaminx dodecahedro
 #include <ctime>	//crand()
 //#include <cmath>	//ceil()
 
-#define MAX_ITERATIONS 20000000
+#define MAX_ITERATIONS 50000000
 #define ADJUSTED_PQ_SIZE 2500000
 #define MAX_PQ_SIZE 5000000
 #define PRINT_EVERY_N_TIMES 1
@@ -450,7 +450,7 @@ int AStar(cubeStruct cube){
 	priority_queue<config> pq;
 	queue<config> temp_q;
 	short heuristic;
-	short prev_turn = -1;
+	short prev_turn;
 	//short prev_turn;
 		
 	int pqSizeCounter=0;
@@ -474,6 +474,8 @@ int AStar(cubeStruct cube){
 
 		if(!testConfig.p.empty())
 			prev_turn = testConfig.p.back();
+		else
+			prev_turn = -13; //so that abs(i-prev_turn) cannot equal 12
 		
 		//Pushes all children onto the priority queue
 		for(short i=0; i<24; i++){
@@ -499,7 +501,7 @@ int AStar(cubeStruct cube){
 		if(pqSizeCounter>=MAX_PQ_SIZE){
 			clearCounter=clearCounter+1;
 			if(clearCounter==PRINT_EVERY_N_TIMES)
-				cout<<"Clearing up space in priority queue. Number of iterations so far: "<<iterationCounter<<endl;
+				cout<<"Clearing up space in priority queue. Number of priority queue items total so far: "<<iterationCounter<<endl;
 			
 
 			if(clearCounter==PRINT_EVERY_N_TIMES){
@@ -523,7 +525,6 @@ int AStar(cubeStruct cube){
 			while(!pq.empty())
 				pq.pop();
 
-//			cout<<"Meowwwww"<<endl;
 
 
 //			for(int i=0; i<ADJUSTED_PQ_SIZE; i++){
@@ -533,7 +534,6 @@ int AStar(cubeStruct cube){
 			}
 
 			pqSizeCounter=ADJUSTED_PQ_SIZE;
-			//iterationCounter=iterationCounter-2;
 		}
 
 
@@ -553,7 +553,7 @@ int AStar(cubeStruct cube){
 		}
 	}
 
-	cout<<"The number of nodes expanded to solve the puzzle was: "<<iterationCounter<<endl;
+	cout<<"The number of nodes expanded to solve the puzzle was: "<<iterationCounter/23<<endl;
 	return 1;
 }
 
