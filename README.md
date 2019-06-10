@@ -56,7 +56,7 @@ Notes: Works well on randomizations of 14 turns or fewer. But runs into issues w
 
 **Version 3.0:**
 * More accurate heuristic: Floyd-Walsall algorithm used to create a distance matrix between nodes.
-* Priority queue limited to 350,000 items, with the 5,000 back items deleted each time the limit is hit.
-* After hitting the 350,000 iteration limit, prints the top item removed every 50,000 iterations, for sanity checks.
+* Priority queue limited to 350,000 items.
+* After hitting the iteration limit, prints the top item removed every 50,000 iterations, for sanity checks.
 * Currently set to a max of 5 million iterations; this can be bumped up by editing global vars.
 
